@@ -46,11 +46,11 @@ else
     trainset.target = trainset.input:clone()
 
     -- The trainer is expecting trainset[123] to be {data[123], label[123]}
-    setmetatable(trainset, 
-    {__index = function(t, i) 
-        return {t.input[i], t.target[i]}  
-        end}
-    );
+    trainset.mt = {}
+    trainset.mt.__index = function(t,key) 
+	return {t.input[key],t.target[key]}
+    end
+    setmetatable(trainset,trainset.mt)
 
     function trainset:size()
         return self.input:size(1)
